@@ -1,0 +1,119 @@
+<html> 
+  <head> 
+        <meta charset="utf-8"> 
+        <title>HelloWorld</title> 
+  </head> 
+    <body> 
+        <p class = "myclass">Apple</p>
+		<p id = "myid">Pear</p>
+		<p class = "myclass">Banana</p>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+		<script>
+		
+		var width = 600;
+		var height = 600;
+		var dataset = [ 30 , 20 , 45 , 12 , 21 ];
+		
+		var svg = d3.select("body").append("svg")
+								.attr("width",width)
+								.attr("height",height);
+		
+		var xScale = d3.scale.linear()
+							.domain([0,d3.max(dataset)])
+							.range([0,500]);
+							
+		var axis = d3.svg.axis()
+						.scale(xScale)
+						.orient("bottom");
+						
+		svg.append("g")
+			.attr("class","axis")
+			.attr("transform","translate(10,160)")
+			.call(axis);
+		
+		svg.selectAll("rect")
+		   .data(dataset)
+		   .enter()
+		   .append("rect")
+		   .attr("x",10)
+		   .attr("y",function(d,i){
+				return i * 30;
+		   })
+		   .attr("width",xScale)           //注意这里
+		   .attr("height",28)
+		   .attr("fill","red")
+		   .transition().duration(2000)
+		   .attr("fill","blue");
+		   
+        </script>
+		<script>
+		var body = d3.select("body");
+		var p1 = body.selectAll("#myid");
+		p1.style("color","red");
+		body.selectAll(".myclass").style("color","blue");
+		</script>
+		<script>	
+		var width = 1000;
+		var height = 600;
+		var dataset = [ 30 , 20 , 45 , 12 , 21 ];
+		var svg = d3.select("body").append("svg")
+					   .attr("width",width)
+					   .attr("height",height);
+		
+		var xScale = d3.scale.linear()
+		        .domain([0,d3.max(dataset)])
+                .range([0,1000]);
+		var axis = d3.svg.axis()
+						.scale(xScale)
+						.orient("up");
+		
+		svg.append("g").attr("class","axis").attr("transform","translate(10,160)").call(axis);
+			svg.selectAll("rect")
+		   .data(dataset)
+		   .enter()
+		   .append("rect")
+		   .attr("x",10)
+		   .attr("y",function(d,i){
+				return i * 30;
+		   })
+		   .attr("width",xScale)
+		   .attr("height",28)
+		   .attr("fill","gree");
+</script>
+    </body> 
+</html>
+
+<!--
+<html> 
+  <head> 
+        <meta charset="utf-8"> 
+        <title>HelloWorld</title> 
+  </head> 
+    <body> 
+    <p>Hello World 1</p>
+    <p>Hello World 2</p>
+        <script>
+        var paragraphs = document.getElementsByTagName("p");
+        for (var i = 0; i < paragraphs.length; i++) {
+          var paragraph = paragraphs.item(i);
+          paragraph.innerHTML = "I like dog.";
+        }          
+        </script> 
+    </body> 
+</html>
+
+ <html> 
+  <head> 
+        <meta charset="utf-8"> 
+        <title>HelloWorld</title> 
+  </head> 
+    <body> 
+        <p>Hello World 1</p>
+        <p>Hello World 2</p>
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+        <script>  
+        d3.select("body").selectAll("p").text("www.ourd3js.com");      
+        </script> 
+    </body> 
+</html>
+-->
