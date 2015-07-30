@@ -1,7 +1,7 @@
 <html>  
   <head>  
         <meta charset="utf-8">  
-        <title>customer nation</title>  
+        <title>customer</title>  
   <style>
  .tooltip{
 	 font-family: simsun;
@@ -32,22 +32,127 @@
 		console.log(str);	*/
 		console.log(csvdata);
 		var nationStatis = new Map();
+		var genderStatis = new Map();
+		var ageStatis = new Map();
 		for( var i=0; i<csvdata.length; i++ ){
 			var nation = csvdata[i].nationality;
-			var mapArray = nationStatis.keySet();
-			if(IsContain(mapArray,nation)){
+			var mapNation = nationStatis.keySet();
+			if(IsContain(mapNation,nation)){
 				nationStatis.inc(nation);
 			}else{
 				nationStatis.put(nation,1);
 			}
 			
+			var gender = csvdata[i].gender;
+			var mapGender = genderStatis.keySet();
+			if(IsContain(mapGender,gender)){
+				genderStatis.inc(gender);
+			}else{
+				genderStatis.put(gender,1);
+			}
 			
+			var year = csvdata[i].birthday.substring(0,4);
+			if(year >= 1990) year= "after 1990";
+			else if(year >= 1980) year = "1980-1990";
+			else if(year >= 1970) year = "1970-1980";
+			else if(year >= 1960) year = "1960-1970";
+			else year = "before 1960";
+			var mapAge = ageStatis.keySet();
+			if(IsContain(mapAge,year)){
+				ageStatis.inc(year);
+			}else{
+				ageStatis.put(year,1);
+			}
 		}
-		var source = [];
+		var nations = [];
 		for(var i=0;i<nationStatis.size();i++){
-			source[i] = [nationStatis.keySet()[i],nationStatis.get(nationStatis.keySet()[i])];		
+			nations[i] = [nationStatis.keySet()[i],nationStatis.get(nationStatis.keySet()[i])];		
 		}
-		console.log(source);
+		console.log(nations);
+		var genders = [];
+		for(var i=0;i<genderStatis.size();i++){
+			genders[i] = [genderStatis.keySet()[i],genderStatis.get(genderStatis.keySet()[i])];	
+		}
+		console.log(genders);
+		var ages = [];
+		for(var i=0;i<ageStatis.size();i++){
+			ages[i] = [ageStatis.keySet()[i],ageStatis.get(ageStatis.keySet()[i])];
+		}
+		draw(nations);
+		draw(genders);
+		draw(ages);
+	});
+	console.log("This is a test log!");
+
+	function Map(){
+		this.container = new Object();
+	}
+
+
+	Map.prototype.put = function(key, value){
+		this.container[key] = value;
+	}
+
+
+	Map.prototype.get = function(key){
+		return this.container[key];
+	}
+
+	Map.prototype.inc = function(key){
+		this.container[key]++;
+	}
+	
+	Map.prototype.keySet = function() {
+		var keyset = new Array();
+		var count = 0;
+		for (var key in this.container) {
+			// 跳过object的extend函数
+			if (key == 'extend') {
+				continue;
+			}
+			keyset[count] = key;
+			count++;
+		}
+		return keyset;
+	}
+
+
+	Map.prototype.size = function() {
+		var count = 0;
+		for (var key in this.container) {
+			// 跳过object的extend函数
+			if (key == 'extend'){
+				continue;
+			}
+			count++;
+		}
+		return count;
+	}
+
+
+	Map.prototype.remove = function(key) {
+		delete this.container[key];
+	}
+
+
+	Map.prototype.toString = function(){
+		var str = "";
+		for (var i = 0, keys = this.keySet(), len = keys.length; i < len; i++) {
+			str = str + keys[i] + "=" + this.container[keys[i]] + ";\n";
+		}
+		return str;
+	} 
+
+	function IsContain(arr,value)
+	{
+	  for(var i=0;i<arr.length;i++)
+	  {
+	     if(arr[i]==value)
+	      return true;
+	  }
+	  return false;
+	}
+	function draw(dataset){
 		var width  = 600;	//SVG绘制区域的宽度
 		var height = 600;	//SVG绘制区域的高度
 			
@@ -59,7 +164,7 @@
 		//1.确定初始数据
 		//var dataset = [ ["小米",60.8] , ["三星",58.4] , ["联想",47.3] , ["苹果",46.6] ,
 						//["华为",41.3] , ["酷派",40.1] , ["其他",111.5] ];
-		var dataset = source;
+		//var dataset = nations;
 		//2.转换数据
 		var pie = d3.layout.pie()
 					.value(function(d){ return d[1]; });
@@ -135,7 +240,7 @@
 				（3）设定提示框的透明度为1.0（完全不透明）
 				*/
 				
-				tooltip.html(d.data[0] + " customer: "  + d.data[1])
+				tooltip.html(d.data[0] + ": "  + d.data[1])
 					.style("left", (d3.event.pageX) + "px")
 					.style("top", (d3.event.pageY + 20) + "px")
 					.style("opacity",1.0);
@@ -151,76 +256,6 @@
 				
 				tooltip.style("opacity",0.0);
 			});
-	});
-	console.log("This is a test log!");
-
-	function Map(){
-		this.container = new Object();
-	}
-
-
-	Map.prototype.put = function(key, value){
-		this.container[key] = value;
-	}
-
-
-	Map.prototype.get = function(key){
-		return this.container[key];
-	}
-
-	Map.prototype.inc = function(key){
-		this.container[key]++;
-	}
-	
-	Map.prototype.keySet = function() {
-		var keyset = new Array();
-		var count = 0;
-		for (var key in this.container) {
-			// 跳过object的extend函数
-			if (key == 'extend') {
-				continue;
-			}
-			keyset[count] = key;
-			count++;
-		}
-		return keyset;
-	}
-
-
-	Map.prototype.size = function() {
-		var count = 0;
-		for (var key in this.container) {
-			// 跳过object的extend函数
-			if (key == 'extend'){
-				continue;
-			}
-			count++;
-		}
-		return count;
-	}
-
-
-	Map.prototype.remove = function(key) {
-		delete this.container[key];
-	}
-
-
-	Map.prototype.toString = function(){
-		var str = "";
-		for (var i = 0, keys = this.keySet(), len = keys.length; i < len; i++) {
-			str = str + keys[i] + "=" + this.container[keys[i]] + ";\n";
-		}
-		return str;
-	} 
-
-	function IsContain(arr,value)
-	{
-	  for(var i=0;i<arr.length;i++)
-	  {
-	     if(arr[i]==value)
-	      return true;
-	  }
-	  return false;
 	}
 	</script>	
     </body>  
