@@ -1,0 +1,22 @@
+region_id,name,manager_id
+1,North America,1
+2,South America,18
+3,Caribbean,27
+4,Central America,44
+5,Australia and New Zealand,53
+6,Melanesia,70
+7,Micronesia,79
+8,Polynesia,96
+9,Eastern Europe,106
+10,Western Europe,115
+11,Northern Europe,132
+12,Southern Europe,141
+13,East Asia,158
+14,Southeast Asia,167
+15,South Asia,184
+16,West Asia,193
+17,East Africa,210
+18,Central Africa,219
+19,North Africa,233
+20,South Africa,242
+21,West Africa,325
